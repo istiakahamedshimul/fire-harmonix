@@ -197,6 +197,24 @@ python server.py
 
 Open <http://127.0.0.1:8000>.
 
+### Deploy on Vercel
+
+The repository is ready for Git-based Vercel deployment:
+
+1. Import the GitHub repository into Vercel.
+2. Keep the **Framework Preset** as `Other`.
+3. Leave **Build Command** empty.
+4. Keep **Output Directory** as `public`.
+5. Deploy. No environment variables are required.
+
+The static dashboard is served from `public/`. Requests under `/api/*` are rewritten by `vercel.json` to the Python function in `api/router.py`. The SQLite database is bundled with that function and opened in read-only mode, so the deployment does not depend on persistent server storage.
+
+You can also deploy with the CLI:
+
+```powershell
+npx vercel
+```
+
 ### Rebuild the data sample
 
 ```powershell

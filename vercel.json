@@ -1,0 +1,44 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "functions": {
+    "api/router.py": {
+      "includeFiles": "data/**",
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/data/fire_samples.csv",
+      "destination": "/api/router?route=download"
+    },
+    {
+      "source": "/api/summary",
+      "destination": "/api/router?route=summary"
+    },
+    {
+      "source": "/api/observations/:id",
+      "destination": "/api/router?route=observation&id=:id"
+    },
+    {
+      "source": "/api/observations",
+      "destination": "/api/router?route=observations"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(css|js)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }
+      ]
+    }
+  ]
+}

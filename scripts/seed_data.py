@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
 CSV_PATH = DATA_DIR / "fire_samples.csv"
 DB_PATH = DATA_DIR / "fire_harmonix.db"
+PUBLIC_CSV_PATH = ROOT / "public" / "data" / "fire_samples.csv"
 
 FILES = (
     ("fire_nrt_M-C61_565334.csv", 67),
@@ -126,6 +127,8 @@ def write_outputs(rows: list[dict[str, object]]) -> None:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
+    PUBLIC_CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
+    PUBLIC_CSV_PATH.write_bytes(CSV_PATH.read_bytes())
 
     if DB_PATH.exists():
         DB_PATH.unlink()
