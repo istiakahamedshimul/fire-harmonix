@@ -207,12 +207,18 @@ The repository is ready for Git-based Vercel deployment:
 4. Keep **Output Directory** as `public`.
 5. Deploy. No environment variables are required.
 
-The static dashboard is served from `public/`. Requests under `/api/*` are rewritten by `vercel.json` to the Python function in `api/router.py`. The SQLite database is bundled with that function and opened in read-only mode, so the deployment does not depend on persistent server storage.
+The dashboard is served entirely from `public/`. Deployment data is exported from SQLite into `public/api/*.json`, so the public site uses Vercel's static CDN and does not depend on serverless-function discovery or persistent server storage.
 
 You can also deploy with the CLI:
 
 ```powershell
 npx vercel
+```
+
+After changing the SQLite data, refresh the deployment files before committing:
+
+```powershell
+python scripts/export_static_api.py
 ```
 
 ### Rebuild the data sample

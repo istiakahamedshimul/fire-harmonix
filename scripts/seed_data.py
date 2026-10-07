@@ -181,6 +181,7 @@ def main() -> None:
     rows = enrich(load_sample(Path(sys.argv[1])))
     write_outputs(rows)
     print(f"Created {CSV_PATH.name} and {DB_PATH.name} with {len(rows)} genuine sampled observations.")
+    print("Run python scripts/export_static_api.py to refresh Vercel's static JSON files.")
 
 
 if __name__ == "__main__":

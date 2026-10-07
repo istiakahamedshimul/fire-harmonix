@@ -6,8 +6,14 @@ const fmt = (value, digits = 0) => Number(value).toLocaleString(undefined, { max
 
 async function load() {
   const [observations, summary] = await Promise.all([
-    fetch('/api/observations').then((r) => r.json()),
-    fetch('/api/summary').then((r) => r.json()),
+    fetch('/api/observations.json').then((r) => {
+      if (!r.ok) throw new Error(`Observations request failed: ${r.status}`);
+      return r.json();
+    }),
+    fetch('/api/summary.json').then((r) => {
+      if (!r.ok) throw new Error(`Summary request failed: ${r.status}`);
+      return r.json();
+    }),
   ]);
   state.observations = observations;
   state.filtered = observations;
