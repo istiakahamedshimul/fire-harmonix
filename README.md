@@ -49,25 +49,26 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-    subgraph Browser
-      UI[HTML + CSS + JavaScript]
-      VIEWS[Map / calendar / scenario lab]
+    subgraph Browser["Browser"]
+      UI["HTML + CSS + JavaScript"]
+      VIEWS["Map, calendar, and scenario lab"]
       UI --> VIEWS
     end
-    subgraph Python
-      API[ThreadingHTTPServer]
-      ROUTES[/api/summary<br/>/api/observations<br/>/api/observations/:id]
+    subgraph Python["Python service"]
+      API["ThreadingHTTPServer"]
+      ROUTES["GET /api/summary<br/>GET /api/observations<br/>GET /api/observations/{id}"]
       API --> ROUTES
     end
-    subgraph Storage
+    subgraph Storage["Project storage"]
       DB[(fire_harmonix.db)]
-      CSV[fire_samples.csv]
-      MODELS[Versioned model artifacts]
+      CSV["fire_samples.csv"]
+      MODELS["Versioned model artifacts"]
     end
-    UI <--> API
+    UI -->|"HTTP request"| API
+    API -->|"JSON response"| UI
     ROUTES --> DB
     CSV --> DB
-    MODELS -. future inference integration .-> API
+    MODELS -. "future inference integration" .-> API
 ```
 
 ## Data source
