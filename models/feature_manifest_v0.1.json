@@ -1,0 +1,29 @@
+{
+  "version": "0.1",
+  "feature_order": [
+    "count",
+    "mean_frp",
+    "max_frp",
+    "mean_brightness",
+    "max_brightness",
+    "day_count",
+    "night_count",
+    "mean_agreement",
+    "mean_hfai",
+    "max_hfai",
+    "hfai_lag_1",
+    "hfai_lag_3",
+    "hfai_lag_7",
+    "rolling_mean_7",
+    "rolling_mean_14",
+    "rolling_std_7",
+    "month",
+    "day_of_year"
+  ],
+  "target": "next_day_mean_hfai",
+  "models": {
+    "anomaly": "isolation_forest_hfai_v0.1.joblib",
+    "forecast": "xgboost_fire_activity_v0.1.json"
+  },
+  "warning": "Feasibility artifacts trained on the bundled demonstration sample; not for operational use."
+}

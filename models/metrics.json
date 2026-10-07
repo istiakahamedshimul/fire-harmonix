@@ -1,0 +1,100 @@
+{
+  "status": "feasibility benchmark; not production validation",
+  "random_seed": 42,
+  "daily_records_before_lags": 68,
+  "model_rows_after_lags": 53,
+  "split": {
+    "train": 37,
+    "validation": 8,
+    "test": 8
+  },
+  "date_ranges": {
+    "train": [
+      "2024-11-16",
+      "2024-12-25"
+    ],
+    "validation": [
+      "2024-12-26",
+      "2025-01-03"
+    ],
+    "test": [
+      "2025-01-04",
+      "2025-01-11"
+    ]
+  },
+  "xgboost": {
+    "selected_parameters": {
+      "n_estimators": 80,
+      "max_depth": 2,
+      "learning_rate": 0.03,
+      "subsample": 0.9,
+      "colsample_bytree": 0.9
+    },
+    "validation_mae": 0.109948,
+    "test": {
+      "mae": 0.063613,
+      "rmse": 0.077477,
+      "r2": -1.583727
+    },
+    "tuning_candidates": [
+      {
+        "parameters": {
+          "n_estimators": 80,
+          "max_depth": 2,
+          "learning_rate": 0.03,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "validation_mae": 0.109948
+      },
+      {
+        "parameters": {
+          "n_estimators": 120,
+          "max_depth": 2,
+          "learning_rate": 0.05,
+          "subsample": 0.9,
+          "colsample_bytree": 1.0
+        },
+        "validation_mae": 0.142925
+      },
+      {
+        "parameters": {
+          "n_estimators": 120,
+          "max_depth": 3,
+          "learning_rate": 0.03,
+          "subsample": 0.8,
+          "colsample_bytree": 0.9
+        },
+        "validation_mae": 0.131844
+      },
+      {
+        "parameters": {
+          "n_estimators": 180,
+          "max_depth": 3,
+          "learning_rate": 0.02,
+          "subsample": 0.9,
+          "colsample_bytree": 0.9
+        },
+        "validation_mae": 0.123697
+      }
+    ]
+  },
+  "baselines": {
+    "persistence": {
+      "mae": 0.069076,
+      "rmse": 0.091689,
+      "r2": -2.618499
+    },
+    "historical_mean": {
+      "mae": 0.049851,
+      "rmse": 0.05283,
+      "r2": -0.201338
+    }
+  },
+  "isolation_forest": {
+    "test_anomaly_count": 3,
+    "test_anomaly_rate": 0.375,
+    "test_score_min": 0.478775,
+    "test_score_max": 0.613778
+  }
+}

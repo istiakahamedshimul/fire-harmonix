@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FIRE-HARMONIX harmonizes NASA FIRMS MODIS and VIIRS active-fire observations.">
+  <title>FIRE-HARMONIX · Satellite Fire Intelligence</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%23060914%22/><path d=%22M34 8c4 12-5 15 1 24 2-7 8-10 11-15 7 10 10 19 6 28-5 12-20 15-31 9C6 47 11 29 23 19c0 8 3 11 5 13-2-10 2-16 6-24Z%22 fill=%22%23ff6b2c%22/><path d=%22M34 36c6 7 7 14 1 19-8 2-14-4-11-11 2-4 6-6 10-8Z%22 fill=%22%23ffd166%22/></svg>">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <a class="brand" href="#overview" aria-label="FIRE-HARMONIX overview"><span class="brand-mark">FH</span><span>FIRE<br><b>HARMONIX</b></span></a>
+      <nav aria-label="Primary navigation">
+        <button class="nav-item active" data-view="overview"><span>01</span>Overview</button>
+        <button class="nav-item" data-view="harmonize"><span>02</span>Harmonize</button>
+        <button class="nav-item" data-view="calendar"><span>03</span>Calendar</button>
+        <button class="nav-item" data-view="lab"><span>04</span>Scenario Lab</button>
+        <button class="nav-item" data-view="data"><span>05</span>Data</button>
+      </nav>
+      <div class="rail-foot"><span class="pulse"></span> Prototype online<br><small><span id="railCount">—</span> source observations</small></div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div><p class="eyebrow">NASA SPACE APPS · EARTH INTELLIGENCE</p><h1 id="viewTitle">Global activity overview</h1></div>
+        <div class="top-actions"><label class="sensor-filter">Sensor<select id="sensorSelect"><option value="ALL">All sensors</option><option value="MODIS">MODIS</option><option value="VIIRS">VIIRS</option></select></label><span class="utc">DATASET · NOV 2024—JAN 2025</span></div>
+      </header>
+
+      <section class="view active" id="overview">
+        <div class="metrics" aria-label="Dataset summary">
+          <article><span>Sample detections</span><strong id="totalDetections">100</strong><small>from Kaggle FIRMS dataset</small></article>
+          <article><span>Fire radiative power</span><strong id="totalFrp">—</strong><small>aggregate MW in sample</small></article>
+          <article><span>Common grid cells</span><strong id="gridCount">—</strong><small>0.05° harmonization grid</small></article>
+          <article class="accent-card"><span>Unusual activity</span><strong id="unusualCount">—</strong><small>engineering threshold only</small></article>
+        </div>
+        <div class="overview-grid">
+          <article class="panel map-panel">
+            <div class="panel-head"><div><p class="kicker">HARMONIZED VIEW</p><h2>Satellite-detected thermal activity</h2></div><div class="legend"><span><i class="dot modis"></i>MODIS</span><span><i class="dot viirs"></i>VIIRS</span></div></div>
+            <div class="world" id="worldMap" role="img" aria-label="World map plot of sampled fire detections"><div class="latitude-lines"></div><div class="map-empty">Loading spatial observations…</div></div>
+            <p class="map-note">Positions are projected from latitude and longitude. Thermal detections are not automatically confirmed wildfires.</p>
+          </article>
+          <article class="panel focus-panel">
+            <div class="panel-head"><div><p class="kicker">FOCUS SIGNAL</p><h2 id="focusRegion">Highest activity sample</h2></div><span class="status-pill" id="focusStatus">—</span></div>
+            <div class="radial" id="radial"><div><strong id="focusHfai">—</strong><span>HFAI</span></div></div>
+            <dl class="signal-list">
+              <div><dt>Sensor</dt><dd id="focusSensor">—</dd></div><div><dt>FRP</dt><dd id="focusFrp">—</dd></div><div><dt>Brightness</dt><dd id="focusBrightness">—</dd></div><div><dt>Agreement</dt><dd id="focusAgreement">—</dd></div>
+            </dl>
+            <button class="primary" data-open-lab>Inspect this observation</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="harmonize">
+        <div class="section-intro"><p class="kicker">COMMON SPATIO-TEMPORAL LANGUAGE</p><h2>Two sensors. One analytical surface.</h2><p>MODIS and VIIRS are normalized within their own sensor groups, then compared on a shared 0.05° grid.</p></div>
+        <div class="sensor-cards" id="sensorCards"></div>
+        <article class="panel pipeline">
+          <div><span>01</span><b>Raw observations</b><small>14 source fields preserved</small></div><i></i><div><span>02</span><b>Sensor normalization</b><small>Brightness, FRP, confidence</small></div><i></i><div><span>03</span><b>Common grid</b><small>Spatial + daily aggregation</small></div><i></i><div><span>04</span><b>HFAI</b><small>Transparent engineering index</small></div>
+        </article>
+        <div class="compare-grid"><article class="panel"><div class="panel-head"><div><p class="kicker">DISTRIBUTION</p><h2>Detection mix</h2></div></div><div class="bars" id="sensorBars"></div></article><article class="panel"><div class="panel-head"><div><p class="kicker">METHOD NOTE</p><h2>What this prototype does</h2></div></div><p class="method-copy">This version does not run Isolation Forest or XGBoost. It computes a reproducible HFAI from within-sensor normalization, source confidence, and a project-defined agreement score. That makes every output traceable while the modeling layer is still being developed.</p></article></div>
+      </section>
+
+      <section class="view" id="calendar">
+        <div class="section-intro"><p class="kicker">BURNING ACTIVITY CALENDAR</p><h2>See when activity concentrates.</h2><p>Each cell represents one sampled day. Color intensity follows average HFAI, not confirmed fire severity.</p></div>
+        <article class="panel calendar-panel"><div class="calendar-scale"><span>Lower activity</span><i></i><i></i><i></i><i></i><i></i><span>Higher activity</span></div><div class="calendar" id="activityCalendar"></div></article>
+        <div class="periods" id="criticalPeriods"></div>
+      </section>
+
+      <section class="view" id="lab">
+        <div class="lab-layout">
+          <div class="section-intro"><p class="kicker">NO-MODEL PROTOTYPE</p><h2>Test a real observation.</h2><p>Choose one of the <span id="labCount">—</span> records sampled from the Kaggle dataset. The result is calculated with the transparent engineering rules described in the methodology—not an AI prediction.</p>
+            <label class="sample-picker">Sample observation<select id="sampleSelect"></select></label>
+            <div class="raw-grid"><label>Latitude<input id="inputLat" readonly></label><label>Longitude<input id="inputLon" readonly></label><label>Brightness (K)<input id="inputBrightness" readonly></label><label>FRP (MW)<input id="inputFrp" readonly></label><label>Confidence<input id="inputConfidence" readonly></label><label>Day / night<input id="inputDaynight" readonly></label></div>
+            <button class="primary large" id="analyzeButton">Generate prototype output</button>
+          </div>
+          <article class="result-card" id="resultCard"><p class="kicker">PROTOTYPE OUTPUT</p><div class="result-status"><span id="resultStatus">Select a sample</span><strong id="resultScore">—</strong></div><div class="result-track"><i id="resultTrack"></i></div><dl><div><dt>Grid cell</dt><dd id="resultGrid">—</dd></div><div><dt>Sensor agreement</dt><dd id="resultAgreement">—</dd></div><div><dt>Satellite / sensor</dt><dd id="resultSensor">—</dd></div><div><dt>Observed UTC</dt><dd id="resultTime">—</dd></div></dl><div class="disclaimer"><b>Interpretation</b><p id="resultText">Choose a source observation to inspect its harmonized activity index.</p></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="data">
+        <div class="section-intro"><p class="kicker">AUDITABLE SAMPLE</p><h2>Every demo result starts here.</h2><p>The project includes the same <span id="dataCount">—</span> records as CSV and SQLite, with original NASA FIRMS fields plus derived harmonization features.</p></div>
+        <div class="data-actions"><a class="primary download" href="/data/fire_samples.csv" download>Download sample CSV</a><span>Table updates with the global sensor filter.</span></div>
+        <article class="panel table-wrap"><table><thead><tr><th>ID</th><th>Sensor</th><th>Satellite</th><th>Acquired</th><th>Coordinates</th><th>FRP</th><th>HFAI</th><th>Status</th></tr></thead><tbody id="dataTable"></tbody></table></article>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
